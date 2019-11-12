@@ -1,23 +1,25 @@
 Start the Spring Boot application and the API is available on http://localhost:8080/graphql
 
-Curl:
+### Curl
 
 ````curl
 curl -X POST \
   http://localhost:8080/graphql \
+  -H 'Accept-Encoding: gzip, deflate' \
   -H 'Content-Type: application/json' \
   -d '{
-    "query": "{ bookById(id: \"book-1\") { id name pageCount author { firstName lastName } } }"
+    "query": "query Books($id: ID!) { bookById(id: $id) { id title pageCount author { firstName lastName } } }",
+    "variables": {  "id": "book-1"  }
 }'
 ````
 
-Postman GraphQL Query:
+### Postman GraphQL Query
 
-````postman
-query {
-    bookById(id: "book-1") { 
+````graphql
+query Books($id: ID!) {
+    bookById(id: $id) { 
         id 
-        name 
+        title 
         pageCount 
         author { 
             firstName 
@@ -27,7 +29,15 @@ query {
 }
 ````
 
-Sample Response:
+Variables:
+
+````json
+{
+	"id": "book-1"
+}
+````
+
+### Response
 
 ````json
 {
@@ -42,6 +52,29 @@ Sample Response:
             }
         }
     }
+}
+````
+
+### Schema Introspection
+
+Postman GraphQL Query:
+
+````graphql
+{
+  __type(name: "Book") {
+    name
+    fields {
+      name
+      type {
+        name
+        kind
+        ofType {
+          name
+          kind
+        }
+      }
+    }
+  }
 }
 ````
 
