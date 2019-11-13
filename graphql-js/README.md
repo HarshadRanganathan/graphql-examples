@@ -1,9 +1,17 @@
+# graphql-js example
+
+This App utilizes:
+
+- [graphql-yoga](https://github.com/prisma-labs/graphql-yoga) for fully-featured GraphQL Server with focus on easy setup, performance & great developer experience
+
+- [Prisma](https://www.prisma.io/) for Simplified & type-safe database access
+
 
 ## Pre-requisites
 
-We are using [Prisma](https://www.prisma.io/) an ORM tool which provides us with a data access layer for resolving our queries to database.
+We are using [Prisma](https://www.prisma.io/) an ORM tool which provides a data access layer for resolving queries to database.
 
-Here, we will be setting up a prisma server and mysql db with docker.
+Here, we will be setting up a ``prisma server`` and ``mysql db`` with docker.
 
 Run below command to start the services.
 
@@ -13,7 +21,7 @@ docker-compose up -d
 
 Access prisma playground at http://localhost:4466/ where you can run your queries and access the schema.
 
-Access prisma admin console at http://localhost:4466/_admin where you can run GraphQL queries and access the database data.
+Access prisma admin console at http://localhost:4466/_admin where you can run GraphQL queries and access the data in database.
 
 Sample Prisma Server Query:
 
@@ -45,6 +53,16 @@ Start the server using below command and access the GraphQL Playground at <http:
 node src/index.js
 ```
 
+### Mutation
+
+```graphql
+mutation {
+  post(url: "prisma.io", description: "Prisma replaces traditional ORMs"){
+    id
+  }
+}
+```
+
 ### Query
 
 ```graphql
@@ -53,16 +71,6 @@ query {
     id
     url
     description
-  }
-}
-```
-
-### Mutation
-
-```graphql
-mutation {
-  post(url: "prisma.io", description: "Prisma replaces traditional ORMs"){
-    id
   }
 }
 ```
