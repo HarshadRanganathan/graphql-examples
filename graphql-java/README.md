@@ -1,4 +1,4 @@
-Start the Spring Boot application and the API is available on http://localhost:8080/graphql
+Start the Spring Boot application and the API is available at http://localhost:8080/graphql
 
 ### Curl
 
