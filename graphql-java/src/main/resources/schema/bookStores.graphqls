@@ -1,0 +1,5 @@
+type BookStores {
+    id: ID
+    storeName: String
+    storeLocation: String
+}

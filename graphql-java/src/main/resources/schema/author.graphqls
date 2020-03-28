@@ -1,5 +1,5 @@
 type Author {
-    id: ID!
+    id: ID
     firstName: String
     lastName: String
 }

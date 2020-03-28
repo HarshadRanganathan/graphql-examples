@@ -3,5 +3,13 @@ schema {
 }
 
 type Query {
-    bookById(id: ID!): Book
+    """
+    Returns book, author and store details for the provided id
+    """
+    bookById(id: ID!, reason: BookViewReason): Book
+
+    """
+    Returns list of books truncated by field argument limit
+    """
+    listBooks(limit: Int!): [Book]
 }

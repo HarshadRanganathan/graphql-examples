@@ -1,6 +1,7 @@
 package com.graphqljava.bookdetails.provider;
 
 import com.graphqljava.bookdetails.datafetchers.GraphQLDataFetchers;
+import com.graphqljava.bookdetails.directives.BookViewReasonDirective;
 import graphql.GraphQL;
 import graphql.analysis.MaxQueryDepthInstrumentation;
 import graphql.schema.GraphQLSchema;
@@ -25,6 +26,9 @@ public class GraphQLProvider {
 
     @Autowired
     private GraphQLDataFetchers graphQLDataFetchers;
+
+    @Autowired
+    private BookViewReasonDirective bookViewReasonDirective;
 
     @Value("classpath:schema/**/*.graphqls")
     private Resource[] schemaResources;
@@ -69,7 +73,10 @@ public class GraphQLProvider {
     private RuntimeWiring buildWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 .type(TypeRuntimeWiring.newTypeWiring("Query").dataFetcher("bookById", graphQLDataFetchers.getBookByIdDataFetcher()))
+                .type(TypeRuntimeWiring.newTypeWiring("Query").dataFetcher("listBooks", graphQLDataFetchers.listBooks()))
                 .type(TypeRuntimeWiring.newTypeWiring("Book").dataFetcher("author", graphQLDataFetchers.getAuthorDataFetcher()))
+                .type(TypeRuntimeWiring.newTypeWiring("Book").dataFetcher("bookStores", graphQLDataFetchers.getBookStores()))
+                .directive("bookViewReason", bookViewReasonDirective)
                 .build();
     }
 }
