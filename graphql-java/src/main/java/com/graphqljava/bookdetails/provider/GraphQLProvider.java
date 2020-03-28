@@ -1,18 +1,22 @@
 package com.graphqljava.bookdetails.provider;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.Resources;
 import com.graphqljava.bookdetails.datafetchers.GraphQLDataFetchers;
 import graphql.GraphQL;
+import graphql.analysis.MaxQueryDepthInstrumentation;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class GraphQLProvider {
@@ -22,23 +26,43 @@ public class GraphQLProvider {
     @Autowired
     private GraphQLDataFetchers graphQLDataFetchers;
 
+    @Value("classpath:schema/**/*.graphqls")
+    private Resource[] schemaResources;
+
     @Bean
     public GraphQL graphQL() {
         return graphQL;
     }
 
     @PostConstruct
-    public void init() throws IOException {
-        final URL url = Resources.getResource("schema/schema.graphqls");
-        final String sdl = Resources.toString(url, Charsets.UTF_8);
-        final GraphQLSchema graphQLSchema = buildSchema(sdl);
-        this.graphQL = GraphQL.newGraphQL(graphQLSchema).build();
+    public void init() {
+        final List<File> schemas = Arrays.stream(schemaResources).filter(Resource::isFile).map(resource -> {
+            try {
+                return resource.getFile();
+            } catch (IOException ex) {
+                throw new RuntimeException("Unable to load schema files");
+            }
+        }).collect(Collectors.toList());
+
+        final GraphQLSchema graphQLSchema = buildSchema(schemas);
+        final MaxQueryDepthInstrumentation maxQueryDepthInstrumentation = new MaxQueryDepthInstrumentation(10);
+
+        this.graphQL = GraphQL
+                .newGraphQL(graphQLSchema)
+                .instrumentation(maxQueryDepthInstrumentation)
+                .build();
     }
 
-    private GraphQLSchema buildSchema(final String sdl) {
-        final TypeDefinitionRegistry typeDefinitionRegistry = new SchemaParser().parse(sdl);
-        final RuntimeWiring runtimeWiring = buildWiring();
+    private GraphQLSchema buildSchema(final List<File> schemas) {
+        final SchemaParser schemaParser = new SchemaParser();
         final SchemaGenerator schemaGenerator = new SchemaGenerator();
+        final TypeDefinitionRegistry typeDefinitionRegistry = new TypeDefinitionRegistry();
+
+        for (final File schema:schemas) {
+            typeDefinitionRegistry.merge(schemaParser.parse(schema));
+        }
+
+        final RuntimeWiring runtimeWiring = buildWiring();
         return schemaGenerator.makeExecutableSchema(typeDefinitionRegistry, runtimeWiring);
     }
 

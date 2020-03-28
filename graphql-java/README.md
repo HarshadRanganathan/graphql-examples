@@ -13,7 +13,7 @@ curl -X POST \
 }'
 ````
 
-### Postman GraphQL Query
+### Postman POST Request GraphQL Query
 
 ````graphql
 query Books($id: ID!) {
