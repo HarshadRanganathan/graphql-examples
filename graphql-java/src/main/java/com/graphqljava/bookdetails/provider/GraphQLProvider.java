@@ -49,11 +49,9 @@ public class GraphQLProvider {
         }).collect(Collectors.toList());
 
         final GraphQLSchema graphQLSchema = buildSchema(schemas);
-        final MaxQueryDepthInstrumentation maxQueryDepthInstrumentation = new MaxQueryDepthInstrumentation(10);
 
         this.graphQL = GraphQL
                 .newGraphQL(graphQLSchema)
-                .instrumentation(maxQueryDepthInstrumentation)
                 .build();
     }
 
