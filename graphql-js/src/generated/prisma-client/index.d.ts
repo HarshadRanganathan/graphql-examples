@@ -605,7 +605,7 @@ export interface User {
   password: String;
 }
 
-export interface UserPromise extends Promise<User>, Fragmentable {
+export interface  UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   email: () => Promise<String>;

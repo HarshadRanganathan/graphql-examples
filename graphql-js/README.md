@@ -19,6 +19,22 @@ Run below command to start the services.
 docker-compose up -d
 ```
 
+Install prisma CLI:
+
+```bash
+yarn global add prisma
+```
+
+## Deploy Prisma Configuration
+
+We then deploy the service configuration to prisma server.
+
+```
+prisma deploy
+```
+
+It will set up a new database and create the table fields.
+
 Access prisma playground at http://localhost:4466/ where you can run your queries and access the schema.
 
 Access prisma admin console at http://localhost:4466/_admin where you can run GraphQL queries and access the data in database.
@@ -34,16 +50,6 @@ Sample Prisma Server Query:
   }
 }
 ```
-
-## Deploy Prisma Configuration
-
-We then deploy the service configuration to prisma server.
-
-```
-prisma deploy
-```
-
-It will set up a new database and create the table fields.
 
 ## Start Server
 
