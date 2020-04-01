@@ -39,18 +39,6 @@ Access prisma playground at http://localhost:4466/ where you can run your querie
 
 Access prisma admin console at http://localhost:4466/_admin where you can run GraphQL queries and access the data in database.
 
-Sample Prisma Server Query:
-
-```graphql
-{
-  links {
-    id
-    description
-    url
-  }
-}
-```
-
 ## Start Server
 
 Start the server using below command and access the GraphQL Playground at <http://localhost:4000>
@@ -59,24 +47,91 @@ Start the server using below command and access the GraphQL Playground at <http:
 node src/index.js
 ```
 
-### Mutation
+## Operations
+
+Run below queries in the graphql playground available at http://localhost:4000/
+
+### Signup
+
+Create a new user with below signup request which will return a token.
 
 ```graphql
 mutation {
-  post(url: "prisma.io", description: "Prisma replaces traditional ORMs"){
+  signup(
+    name: "Alice"
+    email: "alice@prisma.io"
+    password: "graphql"
+  ) {
+    token
+    user {
+      id
+    }
+  }
+}
+```
+
+Configure this token in HTTP headers pane for all subsequent mutation/query operations.
+
+```json
+{
+  "Authorization": "Bearer __TOKEN__"
+}
+```
+
+### Validate Login
+
+Check if the user login works by sending below request which will send a token response.
+
+```graphql
+mutation {
+  login(
+    email: "alice@prisma.io"
+    password: "graphql"
+  ) {
+    token
+    user {
+      email
+      links {
+        url
+        description
+      }
+    }
+  }
+}
+```
+
+### New Post
+
+Create a new post by sending below request.
+
+```graphql
+mutation {
+  post(
+    url: "www.graphqlconf.org"
+    description: "An awesome GraphQL conference"
+  ) {
     id
   }
 }
 ```
 
-### Query
+### Query Feeds
+
+You can get all the posts created with below query:
 
 ```graphql
-query {
-  feed {
-    id
-    url
+query{
+  feed{
     description
+    url
+    postedBy{
+      name
+      email
+      links {
+        description
+        url
+      }
+    }
   }
 }
 ```
