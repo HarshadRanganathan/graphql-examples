@@ -136,6 +136,63 @@ query{
 }
 ```
 
+### Feeds Subscription
+
+Subscribe to new links by running below query:
+
+```graphql
+subscription {
+  newLink {
+      id
+      url
+      description
+      postedBy {
+        id
+        name
+        email
+      }
+  }
+}
+```
+
+### Vote Subscription
+
+Subscribe to new votes.
+
+
+```graphql
+subscription {
+  newVote {
+    id
+    link {
+      url
+      description
+    }
+    user {
+      name
+      email
+    }
+  }
+}
+```
+
+Test it by adding a new vote.
+
+```graphql
+mutation {
+  vote(linkId: "__LINK_ID__") {
+    link {
+      url
+      description
+    }
+    user {
+      name
+      email
+    }
+  }
+}
+```
+
 References:
 
 <https://www.howtographql.com/graphql-js/0-introduction/>
