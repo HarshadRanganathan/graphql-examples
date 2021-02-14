@@ -1,5 +1,8 @@
 # graphql-js example
 
+Lot of the `graphql-yoga` features are now available as part of Apollo GraphQL. 
+https://github.com/prisma-labs/graphql-yoga/issues/382#issuecomment-408390953
+
 This App utilizes:
 
 - [graphql-yoga](https://github.com/prisma-labs/graphql-yoga) for fully-featured GraphQL Server with focus on easy setup, performance & great developer experience
