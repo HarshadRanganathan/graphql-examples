@@ -1,8 +1,10 @@
 # graphql-js example
 
+```
 Lot of the `graphql-yoga` features are now available as part of Apollo GraphQL. 
 
 https://github.com/prisma-labs/graphql-yoga/issues/382#issuecomment-408390953
+```
 
 This App utilizes:
 
