@@ -1,3 +1,7 @@
 # Catstronauts - client
 
-The starting point of the `client` code for Odyssey Lift-off I course.
+```bash
+npm install && npm start
+```
+
+This will open up localhost:3000 in your web browser.
